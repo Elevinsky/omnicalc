@@ -4,6 +4,10 @@ class CalculationsController < ApplicationController
     @text = params[:user_text]
     @special_word = params[:user_word]
 
+@sanitized_text = @text.gsub(" ", "")
+@sanitized_special = @text.gsub(@special_word, "")
+@text_array = @text.split(' ')
+
     # ================================================================================
     # Your code goes below.
     # The text the user input is in the string @text.
@@ -11,13 +15,13 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @sanitized_text.length
 
-    @word_count = "Replace this string with your answer."
+    @word_count = @text_array.length
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text_array.count(@special_word)
 
     # ================================================================================
     # Your code goes above.
