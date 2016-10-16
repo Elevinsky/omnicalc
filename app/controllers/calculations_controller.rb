@@ -97,17 +97,55 @@ class CalculationsController < ApplicationController
 
     @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    if @count.even? == true
+      @median = (@sorted_numbers[(@count-1)/2] + @sorted_numbers[(@count+1)/2])/2
+    elsif @count.odd? == true
+      @median = @sorted_numbers[((@count+1)/2)-1]
+    end
 
-    @sum = "Replace this string with your answer."
+    def sum(list_of_numbers)
+      running_total = 0
+      list_of_numbers.each do |number|
+        running_total = running_total + number
+      end
 
-    @mean = "Replace this string with your answer."
+      return running_total
+    end
 
-    @variance = "Replace this string with your answer."
+    @sum = sum(@numbers)
 
-    @standard_deviation = "Replace this string with your answer."
+    @mean = @sum/@count
 
-    @mode = "Replace this string with your answer."
+    def sqmean(list_of_numbers)
+      running_total = 0
+      list_of_numbers.each do |number|
+        running_total = running_total + (number-@mean)**2
+      end
+
+      return running_total
+    end
+
+    @variance = sqmean(@numbers)/@count
+
+    @standard_deviation = @variance**0.5
+
+    @mode_array = []
+    @starting = 0
+    @winning_count = 0
+    @winning_number = 0
+    while @starting < 3
+      @mode_array.push(2)
+      @starting = @starting + 1
+    #   if @sorted_numbers.count(@sorted_numbers[@starting]) > @winning_count
+    #     @mode_array.push(2)
+    #   @starting = @starting + 1
+    # elsif @sorted_numbers.count(@sorted_numbers[@starting]) < @winning_count
+    #   @mode_array.push(1)
+    #   @starting = @starting + 1
+    # end
+  end
+
+    @mode = @mode_array
 
     # ================================================================================
     # Your code goes above.
