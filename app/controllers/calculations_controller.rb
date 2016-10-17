@@ -4,24 +4,41 @@ class CalculationsController < ApplicationController
     @text = params[:user_text]
     @special_word = params[:user_word]
 
-@sanitized_text = @text.gsub(" ", "")
-@sanitized_special = @text.gsub(@special_word, "")
-@text_array = @text.split(' ')
+
 
     # ================================================================================
     # Your code goes below.
     # The text the user input is in the string @text.
     # The special word the user input is in the string @special_word.
     # ================================================================================
+    @lowercase_text = @text.downcase
+    @lowercase_special = @special_word.downcase
+    @sanitized_text = @text.gsub(" ", "")
+    @text_array = @lowercase_text.split(' ')
+    @wordlength = []
+    @stating_number = 0
 
+    while @stating_number < @text_array.length
+      @wordlength.push(@text_array[@stating_number].length)
+      @stating_number = @stating_number + 1
+    end
+
+    def sum(list_of_numbers)
+      running_total = 0
+      list_of_numbers.each do |number|
+        running_total = running_total + number
+      end
+
+      return running_total
+    end
 
     @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = @sanitized_text.length
+    @character_count_without_spaces = sum(@wordlength)
 
     @word_count = @text_array.length
 
-    @occurrences = @text_array.count(@special_word)
+    @occurrences = @text_array.count(@lowercase_special)
 
     # ================================================================================
     # Your code goes above.
@@ -133,19 +150,21 @@ class CalculationsController < ApplicationController
     @starting = 0
     @winning_count = 0
     @winning_number = 0
-    while @starting < 3
-      @mode_array.push(2)
-      @starting = @starting + 1
-    #   if @sorted_numbers.count(@sorted_numbers[@starting]) > @winning_count
-    #     @mode_array.push(2)
-    #   @starting = @starting + 1
-    # elsif @sorted_numbers.count(@sorted_numbers[@starting]) < @winning_count
-    #   @mode_array.push(1)
-    #   @starting = @starting + 1
-    # end
-  end
+    while @starting < @numbers.length
+      # @mode_array.push(2)
+      # @starting = @starting + 1
+      if @sorted_numbers.count(@sorted_numbers[@starting]) > @winning_count
+        @winning_number = @sorted_numbers[@starting]
+        @winning_count = @sorted_numbers.count(@sorted_numbers[@starting])
+        @starting = @starting + 1
+      elsif @sorted_numbers.count(@sorted_numbers[@starting]) < @winning_count
+        @starting = @starting + 1
+      elsif @sorted_numbers.count(@sorted_numbers[@starting]) == @winning_count
+        @starting = @starting + 1
+      end
+    end
 
-    @mode = @mode_array
+    @mode = @winning_number
 
     # ================================================================================
     # Your code goes above.
